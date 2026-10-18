@@ -1,0 +1,176 @@
+{% include 'shop/header.html' %} 
+
+  {% load static %}
+
+
+
+<style>
+.cart-wrapper {
+    min-height: 70vh;
+    padding: 0 15px; 
+    box-sizing: border-box;
+}
+
+.back-link { 
+    display: inline-block; 
+    margin-bottom: 20px; 
+    text-decoration: none; 
+    color: #6610f2; 
+}
+
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-bottom: 20px; 
+    font-family: sans-serif;
+}
+
+th, td { 
+    border: 1px solid #ddd; 
+    padding: 8px; 
+    text-align: left; 
+}
+
+th { 
+    background-color: #f8f9fa; 
+}
+
+.size-badge { 
+    background: #e9ecef; 
+    padding: 3px 8px; 
+    border-radius: 4px; 
+    font-weight: bold; 
+    font-size: 0.9em; 
+    border: 1px solid #ccc; 
+}
+
+.action-buttons-wrapper {
+    margin-top: 30px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    padding-bottom: 5px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+@media (max-width: 768px) {
+    .cart-wrapper {
+        padding: 10px; /* ছোট স্ক্রিনে চারপাশে নিরাপদ দূরত্ব বজায় রাখবে */
+    }
+
+    /* টেবিলকে মোবাইল ফ্রেন্ডলি করতে স্ক্রোলবার এনে দেওয়া */
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap; /* লেখা এক লাইনে রেখে স্ক্রোল করার সুবিধা দেয় */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    th, td {
+        padding: 8px; /* মোবাইলে টেবিলের ঘরের সাইজ সামান্য ছোট করা হলো */
+        font-size: 14px;
+
+    }
+
+    .back-link {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .action-buttons-wrapper {
+        flex-direction: column; /* মোবাইলে সব উপাদান একটার নিচে আরেকটা আসবে */
+        align-items: stretch; /* ফুল উইডথ নিশ্চিত করতে */
+        gap: 15px;
+        text-align: center;
+    }
+
+    .action-buttons-wrapper button, 
+    .action-buttons-wrapper a {
+        width: 100%; /* মোবাইলে প্রতিটি বাটন বা লিঙ্ক পুরো স্ক্রিন জুড়ে থাকবে */
+        text-align: center;
+        box-sizing: border-box;
+        display: inline-block;
+    }
+}
+
+</style>
+
+<div class="cart-wrapper">
+    <br><h1>Your Shopping Cart</h1> <br>
+
+    <a style="padding: 12px 25px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;" href="{% url 'product_list' %}">← Back to Catalog</a>
+    <br>
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Size</th> 
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart %}
+            <tr>
+                <td>
+                    <strong>{{ item.product.name }}</strong>
+                </td>
+                
+                <td>
+
+                    <span class="size-badge">{{ item.size}}</span>
+
+                </td>
+
+                <td>
+                    <form action="{% url 'cart_update' item.product.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="size" value="{{ item.size }}">
+                        
+                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width: 50px;">
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+
+                <td>${{ item.price }}</td>
+                <td><strong>${{ item.total_price }}</strong></td>
+                
+                <td>
+                    <a href="{% url 'cart_remove' item.product.id %}?size={{ item.size }}" 
+                        style="color: red; text-decoration: none; font-weight: bold;">
+                        Remove
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 30px;">Your cart is empty.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="text-align: right; margin-top: 20px;">
+        <h3>Grand Total: <span style="color: #28a745;">{{ cart.get_total_price }}</span></h3>
+    </div>
+
+
+
+    <div class="action-buttons-wrapper">
+        <button onclick="history.back()" style="padding: 12px 25px; background: #28a745; color: white; border-radius: 4px; border: none; font-weight: bold; cursor: pointer;">← Go Back To Product Details</button>
+        
+        <a href="{% url 'clear_checkout_session' %}" style="color: #dc3545; text-decoration: none; font-size: 1.1rem; font-weight: bold;">
+            ⚠️ Clear Session & Exit
+        </a>
+
+        <a href="{% url 'checkout' %}" style="padding: 12px 25px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block; text-align: center;">
+            Proceed to Checkout →
+        </a>
+    </div>
+</div>
+    {% include 'shop/footer.html' %} 

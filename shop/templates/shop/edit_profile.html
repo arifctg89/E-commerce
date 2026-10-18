@@ -1,0 +1,39 @@
+{% include 'shop/header_loged_in.html' %} 
+
+  {% load static %}
+
+<main>
+<section class="shopping-dashboard">
+    <h2 class="section-title">Welcome, {{ user.full_name }}</h2>
+    <p class="section-title">Email: {{ user.email }}</p>
+    
+    <h3 class="section-title">Edit Profile</h3>
+    <div class="card">
+        <form class="form" action="" method="post">
+            {% csrf_token %}
+
+            <div class="form-control flex-center">
+                <label>Full Name:</label>
+                <input type="text" name="full_name" value="{{ user.full_name }}" required>
+            </div>
+            <div class="form-control flex-center">
+                <label>Home Address:</label>
+                <input type="text" name="add_home" value="{{ user.add_home }}" required>
+            </div>
+            <div class="form-control flex-center">
+                <label>Office Address:</label>
+                <input type="text" name="add_office" value="{{ user.add_office }}" required>
+            </div>
+            <div class="form-control flex-center">
+                <label>Phone:</label>
+                <input type="text" name="reg_phone" value="{{ user.reg_phone }}" required>
+            </div>
+            <button class="btn" type="submit">Update Profile</button>
+            <button class="btn"><a href="/product_list/">Back To Home</a></button>
+        </form>
+
+    </div>
+</section>
+</main>
+
+    {% include 'shop/footer.html' %}

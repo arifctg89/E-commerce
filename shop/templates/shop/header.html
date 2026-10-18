@@ -1,0 +1,74 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- for search engine optimization or accesable -->
+    <meta name="description" content="This is an Ecommerce Project">
+    <title>Ecommerce Project</title>
+        <!-- css styles -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- font awesome cdn -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+</head>
+<body>
+
+    <!-- navbar starts here -->
+     <i class="fas fa-bars fa-2x" id="menu-icon"></i>
+    <nav id="menu" class="hidden">
+        <ul class="nav_upper flex-space-around">
+            <li class="nav_list"><a href="/product_list/" class="nav_link"><img class="profile-icon" src="{% static '/shop/images/logo.png' %}" alt="profile icon"></a></li>
+            {% if logged_in_user %}
+                <li class="nav_list">
+                    <a href="/edit_profile_page/" class="nav_link">Welcome, {{ logged_in_user.full_name }}</a>
+                </li>
+            {% else %}
+                <li class="nav_list">
+                    <a href="{% url 'login' %}" class="nav_link">Login</a>
+                </li>
+            {% endif %}
+            <li class="nav_list"><a href="/product_list/" class="nav_link">Home</a></li>
+            <li class="nav_list"><a href="/contact/" class="nav_link">Contact</a></li>
+            <li class="nav_list"><a href="{% url 'logout' %}" class="nav_link">Logout</a></li>
+        </ul>
+        <ul class="nav_lower flex-space-around">
+            <li class="nav_list"><a href="/product_list/" class="nav_link">AR Express</a></li>
+            <li class="nav_list"><a href="{% url 'cart_detail' %}" class="nav_link" style="color: white; text-decoration: none;">
+                    <i class="fa-solid fa-cart-shopping"></i> Cart                 
+                    <span class="cart-count-badge">
+                        {% if cart_total_count %}
+                            {{ cart_total_count }}
+                        {% else %}
+                            {{ cart|length|default:"0" }}
+                        {% endif %}
+                    </span> Products
+
+
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- navbar ends here -->
+
+
+    <script>
+        const menuIcon = document.getElementById
+        ("menu-icon");
+        const menu = document.getElementById("menu");
+
+        menuIcon.addEventListener("click",()=>{
+            if(menu.className === "hidden"){
+                menu.classList.remove("hidden");
+            } else {
+                menu.classList.add("hidden");
+            }
+        })
+    </script>
+
+
+</body>
+</html>

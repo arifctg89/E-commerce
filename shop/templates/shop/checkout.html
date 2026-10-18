@@ -1,0 +1,117 @@
+{% include 'shop/header.html' %} 
+{% load static %}
+
+<div class="checkout-container">
+    <h2 class="page-title">Checkout</h2>
+
+    <div class="checkout-layout">
+        <!-- বাম পাশের সেকশন: শিপিং ইনফরমেশন -->
+        <div class="checkout-section shipping-box">
+            <div class="card shadow-sm p-3">
+                <h4 class="flex-space-around">Shipping & Payment Details</h4>
+                
+                <form class="form" method="POST" action="">
+                    {% csrf_token %}
+                    
+                    <div class="form-group mb-3">
+                        <label for="{{ form.full_name.id_for_label }}" class="form-label fw-bold">Full Name</label>
+                        <span class="form-span">{{ form.full_name }}</span>
+                        
+                        {% if form.full_name.errors %}
+                            <div class="text-danger small">{{ form.full_name.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="{{ form.email.id_for_label }}" class="form-label fw-bold">Email</label>
+                        <span class="form-span">{{ form.email }}</span>
+                        {% if form.email.errors %}
+                            <div class="text-danger small">{{ form.email.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="{{ form.phone.id_for_label }}" class="form-label fw-bold">Mobile No</label>
+                        <span class="form-span">{{ form.phone}}</span>
+                        {% if form.phone.errors %}
+                            <div class="text-danger small">{{ form.phone.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="{{ form.address.id_for_label }}" class="form-label fw-bold">Address</label>
+                        <span class="form-span">{{ form.address}}</span>
+                        {% if form.address.errors %}
+                            <div class="text-danger small">{{ form.address.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <hr class="my-4">
+
+                    <button type="submit" class="btn-complete-order">
+                        Generate Bill & Complete Order (৳{{ cart.get_total_price }})
+                    </button>
+                </form>
+            </div>
+
+            <div class="continue-shopping-btn">
+                <a href="{% url 'product_list' %}">Continue Shopping</a>
+            </div>
+        </div>
+
+        <!-- ডান পাশের সেকশন: কার্ট সামারি -->
+        <div class="checkout-section cart-summary">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="section-title">Your Cart</span>
+            </h4>
+
+            <ul class="list-group mb-3 shadow-sm">
+                {% for item in cart %}
+                <li class="list-group-item">
+                    <div class="cart-item-card">
+                        <div class="cart-item-img">
+                            {% if item.product.image_file %}
+                                <img class="pcart_pimg" src="{{ item.product.image_file.url }}" alt="{{ item.product.name }}">
+                            {% elif item.product.image_url %}
+                                <img class="pcart_pimg" src="{{ item.product.image_url }}" alt="{{ item.product.name }}">
+                            {% else %}
+                                <img class="pcart_pimg" src="{% static 'images/placeholder.png' %}" alt="No image available">
+                            {% endif %}
+                        </div>
+
+                        <div class="cart-item-details">
+                            <h4 class="item-name"><strong>{{ item.product.name }}</strong></h4>
+                            <table class="item-table">
+                                <tr>
+                                    <td>Size:</td>
+                                    <td><strong>{{ item.size }}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Amount:</td>
+                                    <td><strong>{{ item.quantity }}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Price:</td>
+                                    <td><strong>৳{{ item.total_price }}</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="cart-item-action">
+                            <a href="{% url 'cart_remove' item.product.id %}?size={{ item.size }}" class="text-danger" title="Remove Item">
+                                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+
+                <li class="list-group-item total-cost-box">
+                    <h3>Total Cost: <strong>৳{{ cart.get_total_price }}</strong></h3>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% include 'shop/footer.html' %}

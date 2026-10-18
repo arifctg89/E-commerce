@@ -1,0 +1,51 @@
+{% include 'shop/header.html' %} 
+
+  {% load static %}
+
+<body>
+<main>
+  <section class="contact-section">
+    <h2 class="section-title text-center">Contact With Us</h2>
+
+    <div class="contact-container flex-center">
+          <form action="" class="form card" method="post">
+            <div class="form-control flex-center">
+              <label for="name">Name </label>
+              <input type="text" id="full_name" name="full_name" required>
+            </div>
+
+            <div class="form-control flex-center">
+              <label for="email">Email </label>
+              <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-control flex-center">
+              <label for="massage">Massage</label>
+              <input type="text" id="massage" name="massage" required>
+            </div>
+
+            <div class="form-control flex-center">
+              <button type="submit" class="btn contact-btn">Submit</button>
+            </div>
+          </form>
+          <div class="contact-address flex-space-araound">
+            <address>
+              <h4>Address:</h4>
+              <p>123 high street</p>
+              <p>Bakalia, Chattogram</p>
+              <span>Call:</span><a href="tel:+123456789">+123456789</a>
+            </address>
+                      <iframe class="contact-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29521.242883962826!2d91.85323325000003!3d22.347761900000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30ad27157abeb2db%3A0x3f75d300e5cdbdce!2sBakalia%2C%20Chattogram!5e0!3m2!1sen!2sbd!4v1782047528854!5m2!1sen!2sbd" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>  
+
+          </div>
+    </div>
+
+
+  </section>
+
+</main>
+
+</body>
+
+
+   {% include 'shop/footer.html' %} 

@@ -1,0 +1,56 @@
+{% include 'shop/header.html' %} 
+
+  {% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.name }}</title>
+</head>
+<body>
+
+    <div class="product-details flex-center">
+        <div class="product-details-left flex-center">
+            {% if product.image_url %}
+                <img src="{{ product.image_url }}" alt="{{ product.name }}" style="max-width: 300px;">
+            {% elif product.image_file %}
+                <img src="{{ product.image_file.url }}" alt="{{ product.name }}" style="max-width: 300px;">
+            {% else %}
+                <div style="width:300px; height:300px; background:#eee; display:flex; align-items:center; justify-content:center;">
+                    No Image Available
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="product-details-right">
+            <h1>{{ product.name }}</h1>
+            <p class="price">Price: {{ product.price }}</p>
+            <hr>
+            
+            <h3>Description</h3>
+            <p style="text-align: justify;">{{ product.description }}</p>
+
+            <form action="{% url 'cart_add' product.id %}" method="post">
+
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" value="1" min="1" style="width: 60px; padding: 10px;">
+                
+            <select style="padding: 10px;" name="size" required>
+                <option value="" disabled selected>Select a Size</option>
+                {% for s in product.size.all %}
+                    <option value="{{ s.size }}">{{ s.size }}</option>
+                {% endfor %}
+            </select>
+            
+                {% csrf_token %}
+
+
+                <button class="btn product_button" type="submit">Add to Cart</button>
+                <button class="btn product_button"><a href="{% url 'product_list' %}">← Back to Catalog</a></button>
+            </form>
+        </div>
+    </div>
+ {% include 'shop/footer.html' %} 
+</body>
+</html>

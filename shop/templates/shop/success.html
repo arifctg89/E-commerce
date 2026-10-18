@@ -1,0 +1,85 @@
+{% include 'shop/header.html' %} 
+
+  {% load static %}
+
+<div style="max-width: 600px; margin: 50px auto; text-align: center; font-family: sans-serif;">
+    <div style="color: #28a745; font-size: 48px; margin-bottom: 20px;">✔</div>
+    <h1 style="color: #333;">Order Placed Successfully!</h1>
+    <p style="font-size: 18px; color: #666;">
+        Thank you for your purchase. Your Order ID is: <strong>ARE000{{ order_id }}</strong>
+    </p>
+    
+    <div style="margin-top: 30px; padding: 25px; border: 1px solid #eee; border-radius: 10px; background-color: #f9f9f9;">
+        <p style="margin-bottom: 20px; font-weight: bold;">Choose an option below:</p>
+        
+    <div class="actions" style="margin-top: 30px;">
+        <button onclick="printInvoice()" 
+                style="padding: 12px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-right: 10px;">
+        🖨️ Print Receipt
+        </button>
+
+        <a href="{% url 'cart_download' %}" 
+        download="Invoice_{{ order_id }}.pdf"
+        style="display: inline-block; padding: 12px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+        📥 Download PDF
+        </a>
+    </div>
+
+    <script>
+    function printInvoice() {
+        const pdfUrl = "{% url 'cart_download' %}";
+        const printWindow = window.open(pdfUrl, '_blank');
+        
+        if (printWindow) {
+            // This waits for the PDF to load in the new tab before opening the print dialog
+            printWindow.onload = function() {
+                printWindow.print();
+            };
+        } else {
+            alert("Please allow pop-ups to print your receipt.");
+        }
+    }
+    </script>
+
+    <p style="margin-top: 20px;">
+            <a href="{% url 'product_list' %}" style="color: #007bff;">Return to Store</a>
+        </p>
+    </div>
+
+
+    <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
+        <p style="font-size: 14px; color: #999;">
+            Finished? For your security, you can clear your checkout data.
+        </p>
+        <a href="{% url 'clear_checkout_session' %}" 
+        style="color: #dc3545; text-decoration: none; font-size: 14px; font-weight: bold;">
+        ⚠️ Clear Session & Exit
+        </a>
+    </div>
+
+</div>
+
+
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        .container, .container * {
+            visibility: visible;
+        }
+        .container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+        /* Hide buttons during actual print */
+        button, a {
+            display: none !important;
+        }
+    }
+</style>
+    {% include 'shop/footer.html' %} 
+
+

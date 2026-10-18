@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- for search engine optimization or accesable -->
+    <meta name="description" content="This is an Ecommerce Project">
+    <title>Ecommerce Project</title>
+        <!-- css styles -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- font awesome cdn -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+         <i class="fas fa-bars fa-2x" id="menu-icon"></i>
+    <nav id="menu" class="hidden">
+        <ul class="nav_upper flex-space-around">
+            <li class="nav_list"><a href="/" class="nav_link"><img class="profile-icon" src="{% static '/shop/images/logo.png' %}" alt="profile icon"></a></li>
+            <li class="nav_list"><a href="/" class="nav_link">Welcome To AR Express</a></li>
+            <li class="nav_list"><a href="/" class="nav_link">Login</a></li>
+        </ul>
+    </nav>
+
+<body>
+<main>
+  <section class="register">
+    <h2 class="section-title text-center">User Registration</h2>
+    <div class="card">
+
+      <form action="" class="form" method="post">
+        {% csrf_token %}
+
+        <div class="form-control flex-center">
+          <label for="name">Full Name </label>
+          <input type="text" id="full_name" name="full_name" required>
+        </div>
+
+        <div class="form-control flex-center">
+          <label for="email">Email </label>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-control flex-center">
+          <label for="add_home">Address Home</label>
+          <input type="text" id="add_home" name="add_home" required>
+        </div>
+
+        <div class="form-control flex-center">
+          <label for="add_office">Address Office</label>
+          <input type="text" id="add_office" name="add_office" required>
+        </div>
+
+        <div class="form-control flex-center">
+          <label for="phone">Phone</label>
+          <input type="phone" id="reg_phone" name="reg_phone" required>
+        </div>
+
+        <div class="form-control flex-center">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+
+        <div class="form-control flex-center">
+          <button type="submit" class="btn contact-btn">Submit</button>
+        </div>
+        
+      </form>
+    </div>
+
+
+
+
+</main>
+
+</body>
+    <script>
+        const menuIcon = document.getElementById
+        ("menu-icon");
+        const menu = document.getElementById("menu");
+
+        menuIcon.addEventListener("click",()=>{
+            if(menu.className === "hidden"){
+                menu.classList.remove("hidden");
+            } else {
+                menu.classList.add("hidden");
+            }
+        })
+    </script>
+
+    {% include 'shop/footer.html' %}
